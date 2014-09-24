@@ -9,10 +9,10 @@ BallSprite::~BallSprite()
 {
 
 }
-BallSprite* BallSprite::createBall(int type)
+BallSprite* BallSprite::createBall(int t_type)
 {
-	BallSprite *sp;
-	switch (type)
+	BallSprite *sp = nullptr;
+	switch (t_type)
 	{
 	case red:
 		sp = BallSprite::create("red.png");
@@ -33,6 +33,9 @@ BallSprite* BallSprite::createBall(int type)
 		sp = BallSprite::create("blue.png");
 		break;
 	}
+
+	sp->setAnchorPoint(ccp(0, 0));
+	sp->setType(t_type);
 	return sp;
 }
 bool BallSprite::init()
@@ -45,10 +48,32 @@ void BallSprite::setPos(Point p)
 {
 	x = p.x;
 	y = p.y;
-	this->setPosition(ccp(x*30, y*30));
+	this->setPosition(ccp(x*30+1, y*30+1));
 }
 
-Point BallSprite::getPos()
+BallSprite* BallSprite::createRandomBall()
 {
-	return ccp(x, y);
+	int i = 1 + rand() % 6;
+	return createBall(i);
+}
+void BallSprite::flash()
+{
+	auto flash1 = ScaleTo::create(0.5, 1, 0.5);
+	auto flash2 = ScaleTo::create(0.5, 1,1);
+	auto flash = Sequence::create(flash1, flash2,nullptr);
+	flash->setTag(0x1f);
+	this->runAction(flash);
+}
+void BallSprite::flashStop()
+{
+	this->stopActionByTag(0x1f);
+	this->setScale(1, 1);
+}
+int BallSprite::getPosX()
+{
+	return x;
+}
+int BallSprite::getPosY()
+{
+	return y;
 }

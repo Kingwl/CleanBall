@@ -4,15 +4,16 @@ using namespace cocos2d;
 class BallSprite :public Sprite
 {
 public:
-	static const int red = 0;
-	static const int purple = 1;
-	static const int pink = 2;
-	static const int orange = 3;
-	static const int green = 4;
-	static const int blue = 5;
+	static const int red = 1;
+	static const int purple = 2;
+	static const int pink = 3;
+	static const int orange = 4;
+	static const int green = 5;
+	static const int blue = 6;
 	BallSprite();
 	~BallSprite();
 	static BallSprite* createBall(int type);
+	static BallSprite* createRandomBall();
 	virtual bool init();
 	static BallSprite* create(std::string str)
 	{
@@ -26,9 +27,17 @@ public:
 		return nullptr;
 	}
 	void setPos(Point p);
-	Point getPos();
+	void flash();
+	void flashStop();
+	int getPosX();
+	int getPosY();
+	int getType(){ return m_type; };
+	void setType(int n){
+		m_type = n;
+	}
 private:
 	int x;
 	int y;
+	int m_type;
 };
 
